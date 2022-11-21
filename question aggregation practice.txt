@@ -1,0 +1,67 @@
+> db.agggregationpractice.insertMany([{name:'prathamesh',year:'TE',marks:93},{name:'harshit',year:'TE',marks:90},{name:'mahesh',year:'SE',marks:89},{name:'aditya',year:'SE',marks:88}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("63797af7a00873e925f4951d"),
+                ObjectId("63797af7a00873e925f4951e"),
+                ObjectId("63797af7a00873e925f4951f"),
+                ObjectId("63797af7a00873e925f49520")
+        ]
+}
+
+
+> db.agggregationpractice.find().pretty()
+{
+        "_id" : ObjectId("63797af7a00873e925f4951d"),
+        "name" : "prathamesh",
+        "year" : "TE",
+        "marks" : 93
+}
+{
+        "_id" : ObjectId("63797af7a00873e925f4951e"),
+        "name" : "harshit",
+        "year" : "TE",
+        "marks" : 90
+}
+{
+        "_id" : ObjectId("63797af7a00873e925f4951f"),
+        "name" : "mahesh",
+        "year" : "SE",
+        "marks" : 89
+}
+{
+        "_id" : ObjectId("63797af7a00873e925f49520"),
+        "name" : "aditya",
+        "year" : "SE",
+        "marks" : 88
+}
+
+GROUP BY YEAR and calculate sum of marks
+> db.agggregationpractice.aggregate({$group:{_id:"$year",totalmarks:{$sum:"$marks"}}})
+
+{ "_id" : "SE", "totalmarks" : 177 }
+{ "_id" : "TE", "totalmarks" : 183 }
+
+
+GROUP BY YEAR and calculate sum of marks,average marks
+> db.agggregationpractice.aggregate({$group:{_id:"$year",totalmarks:{$sum:"$marks"},avgmarks:{$avg:"$marks"}}})
+
+{ "_id" : "SE", "totalmarks" : 177, "avgmarks" : 88.5 }
+{ "_id" : "TE", "totalmarks" : 183, "avgmarks" : 91.5 }
+
+
+GROUP BY YEAR and calculate sum of marks,average marks,maximum marks
+> db.agggregationpractice.aggregate({$group:{_id:"$year",totalmarks:{$sum:"$marks"},avgmarks:{$avg:"$marks"},maximum:{$max:"$marks"}}})
+
+{ "_id" : "SE", "totalmarks" : 177, "avgmarks" : 88.5, "maximum" : 89 }
+{ "_id" : "TE", "totalmarks" : 183, "avgmarks" : 91.5, "maximum" : 93 }
+
+
+
+
+
+GROUP BY YEAR and calculate sum of marks,average marks,maximum marks,minimum marks
+> db.agggregationpractice.aggregate({$group:{_id:"$year",totalmarks:{$sum:"$marks"},avgmarks:{$avg:"$marks"},maximum:{$max:"$marks"},minimum:{$min:"$marks"}}})
+
+{ "_id" : "SE", "totalmarks" : 177, "avgmarks" : 88.5, "maximum" : 89, "minimum" : 88 }
+{ "_id" : "TE", "totalmarks" : 183, "avgmarks" : 91.5, "maximum" : 93, "minimum" : 90 }

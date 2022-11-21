@@ -1,0 +1,288 @@
+mysql> use prathamesh;
+Database changed
+
+QUESTION 01.
+mysql> create table emp(e_number varchar(10) primary key,e_name varchar(20),dept_no int);
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> create table dept(dept_no int primary key,dept_name varchar(20));
+Query OK, 0 rows affected (0.45 sec)
+
+mysql> create table address(dept_name varchar(20),dept_location varchar(20));
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> insert into emp values('E1011','Prathamesh',1);
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into emp values('E1012','Rohit',2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp values('E1013','Rohan',3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp values('E1014','Piyush',3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp values('E1015','Ramesh',2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> update emp set dept_no=4 where e_name='piyush';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emp;
++----------+------------+---------+
+| e_number | e_name     | dept_no |
++----------+------------+---------+
+| E1011    | Prathamesh |       1 |
+| E1012    | Rohit      |       2 |
+| E1013    | Rohan      |       3 |
+| E1014    | Piyush     |       4 |
+| E1015    | Ramesh     |       2 |
++----------+------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> insert into dept values(1,'HR');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into dept values(2,'SDE');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dept values(3,'CEO');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dept values(4,'CFO');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from dept;
++---------+-----------+
+| dept_no | dept_name |
++---------+-----------+
+|       1 | HR        |
+|       2 | SDE       |
+|       3 | CEO       |
+|       4 | CFO       |
++---------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> insert into address values('HR','Chennai');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into address values('SDE','Pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into address values('CEO','Mumbai');
+Query OK, 1 row affected (0.57 sec)
+
+mysql> insert into address values('CFO','DELHI');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from address;
++-----------+---------------+
+| dept_name | dept_location |
++-----------+---------------+
+| HR        | Chennai       |
+| SDE       | Pune          |
+| CEO       | Mumbai        |
+| CFO       | DELHI         |
++-----------+---------------+
+4 rows in set (0.00 sec)
+
+
+Q1.Display the name of department for the employee having E_number.
+ans.
+mysql> select dept.dept_name from dept,emp where emp.e_number='E1011' and dept.dept_no=emp.dept_no;
++-----------+
+| dept_name |
++-----------+
+| HR        |
++-----------+
+1 row in set (0.25 sec)
+
+
+Q2.Display the location of department where employee 'ramesh' is working
+ans.mysql> select dept_location from address where dept_name=(select dept.dept_name from dept,emp where dept.dept_no=emp.dept_no and emp.e_name='ramesh');
++---------------+
+| dept_location |
++---------------+
+| Pune          |
++---------------+
+1 row in set (0.00 sec)
+
+
+Q3.Display total no of employess working in each department.
+ans.
+mysql> select dept_no,count(e_number) from emp group by dept_no;
++---------+-----------------+
+| dept_no | count(e_number) |
++---------+-----------------+
+|       1 |               1 |
+|       2 |               2 |
+|       3 |               1 |
+|       4 |               1 |
++---------+-----------------+
+4 rows in set (0.00 sec)
+
+
+
+QUESTION 02.
+Consider insurance database with following schema.
+
+mysql> create table person (driver_id int,name varchar(20),address varchar(20));
+Query OK, 0 rows affected (0.49 sec)
+
+mysql> create table car (licence int,model varchar(20),year varchar(4));
+Query OK, 0 rows affected (0.54 sec)
+
+mysql> create table accident (report_no int,date1 date,location varchar(20));
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> create table owns(driver_id int,licence int);
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> create table participated(driver_id int,car varchar(20),report_no int,damage_amount varchar(20));
+Query OK, 0 rows affected (0.32 sec)
+
+
+mysql> insert into person values(1,'Prathamesh','pune');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into person values(2,'Rohit','Mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into person values(3,'Rohan','chennai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into person values(4,'Rahul','pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into person values(5,'piyush','delhi');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select* from person;
++-----------+------------+---------+
+| driver_id | name       | address |
++-----------+------------+---------+
+|         1 | Prathamesh | pune    |
+|         2 | Rohit      | Mumbai  |
+|         3 | Rohan      | chennai |
+|         4 | Rahul      | pune    |
+|         5 | piyush     | delhi   |
++-----------+------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> insert into car values(1,'Rolls-royce','2022');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into car values(2,'BMW','2016');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into car values(3,'Mercedes','2016');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into car values(4,'Porche','2018');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into car values(5,'Tesla','2016');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select* from car;
++---------+-------------+------+
+| licence | model       | year |
++---------+-------------+------+
+|       1 | Rolls-royce | 2022 |
+|       2 | BMW         | 2016 |
+|       3 | Mercedes    | 2016 |
+|       4 | Porche      | 2018 |
+|       5 | Tesla       | 2016 |
++---------+-------------+------+
+5 rows in set (0.00 sec)
+
+
+mysql> insert into accident values(1,'2022-04-26','mumbai');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into accident values(2,'2016-01-14','chennai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident values(3,'2018-05-22','pune');
+Query OK, 1 row affected (0.17 sec)
+
+mysql> insert into accident values(4,'2018-06-21','delhi');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident values(5,'2016-06-21','delhi');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select* from accident;
++-----------+------------+----------+
+| report_no | date1      | location |
++-----------+------------+----------+
+|         1 | 2022-04-26 | mumbai   |
+|         2 | 2016-01-14 | chennai  |
+|         3 | 2018-05-22 | pune     |
+|         4 | 2018-06-21 | delhi    |
+|         5 | 2016-06-21 | delhi    |
++-----------+------------+----------+
+5 rows in set (0.01 sec)
+
+mysql> insert into owns values(1,1);
+Query OK, 1 row affected (0.42 sec)
+
+mysql> insert into owns values(2,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into owns values(3,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into owns values(4,4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into owns values(5,5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select* from owns;
++-----------+---------+
+| driver_id | licence |
++-----------+---------+
+|         1 |       1 |
+|         2 |       2 |
+|         3 |       3 |
+|         4 |       4 |
+|         5 |       5 |
++-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> insert into participated values(1,'Rolls-royce',1,12000);
+Query OK, 1 row affected (0.38 sec)
+
+mysql> insert into participated values(2,'BMW',2,25200);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into participated values(3,'Meredes',3,22200);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> update participated set car='mercedes' where car='Meredes';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> insert into participated values(4,'Porche',4,12200);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into participated values(5,'Tesla',5,13230);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select* from participated;
++-----------+-------------+-----------+---------------+
+| driver_id | car         | report_no | damage_amount |
++-----------+-------------+-----------+---------------+
+|         1 | Rolls-royce |         1 |         12000 |
+|         2 | BMW         |         2 |         25200 |
+|         3 | mercedes    |         3 |         22200 |
+|         4 | Porche      |         4 |         12200 |
+|         5 | Tesla       |         5 |         13230 |
++-----------+-------------+-----------+---------------+
+5 rows in set (0.00 sec)
+
+Q.Find the total no of people who owned cars that were involved in accident in 2016.
+

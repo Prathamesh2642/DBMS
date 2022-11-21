@@ -1,0 +1,181 @@
+		       JOINS ASSIGNMENT DBMS
+
+mysql> use prathamesh;
+Database changed
+
+mysql> create table cust_info(c_id int primary key,cname varchar(20), city varchar(20));
+Query OK, 0 rows affected (0.36 sec)
+
+mysql> create table acc_info(c_id int,acc_type varchar(10),amount int);
+Query OK, 0 rows affected (0.29 sec)
+
+mysql> insert into cust_info values(1,'prathamesh','pune'),(2,'seema','sambaji nagar'), (3,'amita','nagar'), (4,'rakesh','pune'), (5,'samata','nashik'), (6,'ankita','chandwad'), (7,'bhavika','pune'), (8,'deepa','mumbai'), (9,'nitin','nagpur'), (10,'pooja','pune');
+Query OK, 10 rows affected (0.35 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from cust_info;
++------+------------+---------------+
+| c_id | cname      | city          |
++------+------------+---------------+
+|    1 | prathamesh | pune          |
+|    2 | seema      | sambaji nagar |
+|    3 | amita      | nagar         |
+|    4 | rakesh     | pune          |
+|    5 | samata     | nashik        |
+|    6 | ankita     | chandwad      |
+|    7 | bhavika    | pune          |
+|    8 | deepa      | mumbai        |
+|    9 | nitin      | nagpur        |
+|   10 | pooja      | pune          |
++------+------------+---------------+
+10 rows in set (0.00 sec)
+
+
+mysql> insert into acc_info values(1,'current',5000),(2,'saving',20000),(3,'saving',70000),(4,'saving',50000),(6,'current',35000),(7,'loan',30000),(8,'saving',50000),(9,'saving',90000),(10,'loan',8000),(11,'current',45000);
+Query OK, 10 rows affected (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from acc_info;
++------+----------+--------+
+| c_id | acc_type | amount |
++------+----------+--------+
+|    1 | current  |   5000 |
+|    2 | saving   |  20000 |
+|    3 | saving   |  70000 |
+|    4 | saving   |  50000 |
+|    6 | current  |  35000 |
+|    7 | loan     |  30000 |
+|    8 | saving   |  50000 |
+|    9 | saving   |  90000 |
+|   10 | loan     |   8000 |
+|   11 | current  |  45000 |
++------+----------+--------+
+10 rows in set (0.00 sec)
+
+
+Q1.Show the cname, Acc_Type, amount information of customer who is having an saving account.
+ans.
+mysql> select cust_info.cname,acc_info.acc_type,acc_info.amount from cust_info,acc_info where cust_info.c_id=acc_info.c_id and acc_info.acc_type='saving';
++--------+----------+--------+
+| cname  | acc_type | amount |
++--------+----------+--------+
+| seema  | saving   |  20000 |
+| amita  | saving   |  70000 |
+| rakesh | saving   |  50000 |
+| deepa  | saving   |  50000 |
+| nitin  | saving   |  90000 |
++--------+----------+--------+
+5 rows in set (0.01 sec)
+
+
+Q2.Display the data using Natural, left and right join.
+ans.
+Natural Join:-
+mysql> select cust_info.cname,acc_info.acc_type,acc_info.amount from cust_info,acc_info where cust_info.c_id=acc_info.c_id and acc_info.acc_type='saving';
++--------+----------+--------+
+| cname  | acc_type | amount |
++--------+----------+--------+
+| seema  | saving   |  20000 |
+| amita  | saving   |  70000 |
+| rakesh | saving   |  50000 |
+| deepa  | saving   |  50000 |
+| nitin  | saving   |  90000 |
++--------+----------+--------+
+5 rows in set (0.01 sec)
+
+Left Join:-
+mysql> select * from cust_info left join acc_info on cust_info.c_id=acc_info.c_id;
++------+------------+---------------+------+----------+--------+
+| c_id | cname      | city          | c_id | acc_type | amount |
++------+------------+---------------+------+----------+--------+
+|    1 | prathamesh | pune          |    1 | current  |   5000 |
+|    2 | seema      | sambaji nagar |    2 | saving   |  20000 |
+|    3 | amita      | nagar         |    3 | saving   |  70000 |
+|    4 | rakesh     | pune          |    4 | saving   |  50000 |
+|    5 | samata     | nashik        | NULL | NULL     |   NULL |
+|    6 | ankita     | chandwad      |    6 | current  |  35000 |
+|    7 | bhavika    | pune          |    7 | loan     |  30000 |
+|    8 | deepa      | mumbai        |    8 | saving   |  50000 |
+|    9 | nitin      | nagpur        |    9 | saving   |  90000 |
+|   10 | pooja      | pune          |   10 | loan     |   8000 |
++------+------------+---------------+------+----------+--------+
+10 rows in set (0.10 sec)
+
+Right Join:-
+mysql> select * from acc_info right join cust_info on cust_info.c_id=acc_info.c_id;
++------+----------+--------+------+------------+---------------+
+| c_id | acc_type | amount | c_id | cname      | city          |
++------+----------+--------+------+------------+---------------+
+|    1 | current  |   5000 |    1 | prathamesh | pune          |
+|    2 | saving   |  20000 |    2 | seema      | sambaji nagar |
+|    3 | saving   |  70000 |    3 | amita      | nagar         |
+|    4 | saving   |  50000 |    4 | rakesh     | pune          |
+| NULL | NULL     |   NULL |    5 | samata     | nashik        |
+|    6 | current  |  35000 |    6 | ankita     | chandwad      |
+|    7 | loan     |  30000 |    7 | bhavika    | pune          |
+|    8 | saving   |  50000 |    8 | deepa      | mumbai        |
+|    9 | saving   |  90000 |    9 | nitin      | nagpur        |
+|   10 | loan     |   8000 |   10 | pooja      | pune          |
++------+----------+--------+------+------------+---------------+
+10 rows in set (0.00 sec)
+
+
+Q3.Display the information of customers living in the same city as
+of ‘pooja’.
+ans.
+mysql> select cust_info.c_id,cust_info.cname,acc_info.acc_type,acc_info.amount from cust_info,acc_info where city=(select city from cust_info where cname='pooja') and cust_info.c_id=acc_info.c_id;
++------+------------+----------+--------+
+| c_id | cname      | acc_type | amount |
++------+------------+----------+--------+
+|    1 | prathamesh | current  |   5000 |
+|    4 | rakesh     | saving   |  50000 |
+|    7 | bhavika    | loan     |  30000 |
+|   10 | pooja      | loan     |   8000 |
++------+------------+----------+--------+
+4 rows in set (0.00 sec)
+
+
+Q4.Display the information of account, having less amount than
+average amount throughout the bank.
+ans.
+mysql> select cust_info.c_id,cust_info.cname,acc_info.acc_type,acc_info.amount from cust_info,acc_info where amount<(select avg(amount) from acc_info) and cust_info.c_id=acc_info.c_id;
++------+------------+----------+--------+
+| c_id | cname      | acc_type | amount |
++------+------------+----------+--------+
+|    1 | prathamesh | current  |   5000 |
+|    2 | seema      | saving   |  20000 |
+|    6 | ankita     | current  |  35000 |
+|    7 | bhavika    | loan     |  30000 |
+|   10 | pooja      | loan     |   8000 |
++------+------------+----------+--------+
+5 rows in set (0.01 sec)
+
+
+Q5.Display the C_id having maximum amount in account.
+ans.
+mysql> select c_id from acc_info where amount=(select max(amount) from acc_info);
++------+
+| c_id |
++------+
+|    9 |
++------+
+1 row in set (0.00 sec)
+
+
+Q6.Display the amount and acc_type of those customers whose amount is the minimum amount of that
+Acc_type.
+ans.
+mysql> select amount,acc_type from acc_info where amount=(select min(amount) from acc_info);
++--------+----------+
+| amount | acc_type |
++--------+----------+
+|   5000 | current  |
++--------+----------+
+1 row in set (0.00 sec)
+
+
+Q7.Display the amount of those accounts whose amount is higher than amount of any saving account amount.
+ans.
+mysql> select amount from acc_info where amount>(select max(amount) from acc_info where acc_type='saving');
+Empty set (0.00 sec)
+No account has amount more than the max of savings account from the table.

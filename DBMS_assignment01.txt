@@ -1,0 +1,285 @@
+create database prathamesh;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use prathamesh;
+Database changed
+mysql> create table employee(EID int, ename varchar(30),address varchar(30),salary int,commision int);
+Query OK, 0 rows affected (0.06 sec)
+mysql> create table project(prno int,address varchar(30));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into employee values(1,'Prathamesh Patil','pune',35000,5000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into employee values(2,'sneha','pune',25000,NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(3,'Savita','Nasik',28000,2000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(4,'Pooja','Mumbai',19000,NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(5,'Sagar','Mumbai',25000,3000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(6,'Ganesh','Nasik',35000,4000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(7,'Amit','Pune',23000,NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(8,'Mohit','Delhi',33000,4500);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(9,'Piyush','Kolkata',30000,NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(10,'Pratham','Udaipur',38000,1000);
+Query OK, 1 row affected (0.01 sec)
+
+-------------------------------------------------------------------------------------
+mysql> insert into project values(10,'Mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project values(20,'Pune');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into project values(30,'Jalgaon');
+Query OK, 1 row affected (0.01 sec)
+mysql> insert into project values(40,'Delhi');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project values(50,'Nasik');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project values(60,'Kolkata');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project values(70,'chennai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project values(80,'Udaipur');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project values(90,'Lucknow');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project values(100,'kanpur');
+Query OK, 1 row affected (0.01 sec)
+-------------------------------------------------------------------------------------
+mysql> select * from employee;
++------+------------------+---------+--------+-----------+
+| EID  | ename            | address | salary | commision |
++------+------------------+---------+--------+-----------+
+|    1 | Prathamesh Patil | pune    |  35000 |      5000 |
+|    2 | sneha            | pune    |  25000 |      NULL |
+|    3 | Savita           | Nasik   |  28000 |      2000 |
+|    4 | Pooja            | Mumbai  |  19000 |      NULL |
+|    5 | Sagar            | Mumbai  |  25000 |      3000 |
+|    6 | Ganesh           | Nasik   |  35000 |      4000 |
+|    7 | Amit             | Pune    |  23000 |      NULL |
+|    8 | Mohit            | Delhi   |  33000 |      4500 |
+|    9 | Piyush           | Kolkata |  30000 |      NULL |
+|   10 | Pratham          | Udaipur |  38000 |      1000 |
++------+------------------+---------+--------+-----------+
+10 rows in set (0.01 sec)
+
+mysql> select * from project;
++------+---------+
+| prno | address |
++------+---------+
+|   10 | Mumbai  |
+|   20 | Pune    |
+|   30 | Jalgaon |
+|   40 | Delhi   |
+|   50 | Nasik   |
+|   60 | Kolkata |
+|   70 | chennai |
+|   80 | Udaipur |
+|   90 | Lucknow |
+|  100 | kanpur  |
++------+---------+
+10 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------
+Q1.Find different locations from where employees belong to.
+mysql> select distinct address from employee;
++---------+
+| address |
++---------+
+| pune    |
+| Nasik   |
+| Mumbai  |
+| Delhi   |
+| Kolkata |
+| Udaipur |
++---------+
+6 rows in set (0.01 sec)
+-------------------------------------------------------------------------------------
+Q2.What is maximum and minimum salary?
+mysql> select max(salary),min(salary) from employee;
++-------------+-------------+
+| max(salary) | min(salary) |
++-------------+-------------+
+|       38000 |       19000 |
++-------------+-------------+
+1 row in set (0.00 sec)
+-------------------------------------------------------------------------------------
+Q3.Display the content of employee table according to the ascending order of salary amount.
+mysql> select * from employee order by salary asc;
++------+------------------+---------+--------+-----------+
+| EID  | ename            | address | salary | commision |
++------+------------------+---------+--------+-----------+
+|    4 | Pooja            | Mumbai  |  19000 |      NULL |
+|    7 | Amit             | Pune    |  23000 |      NULL |
+|    2 | sneha            | pune    |  25000 |      NULL |
+|    5 | Sagar            | Mumbai  |  25000 |      3000 |
+|    3 | Savita           | Nasik   |  28000 |      2000 |
+|    9 | Piyush           | Kolkata |  30000 |      NULL |
+|    8 | Mohit            | Delhi   |  33000 |      4500 |
+|    1 | Prathamesh Patil | pune    |  35000 |      5000 |
+|    6 | Ganesh           | Nasik   |  35000 |      4000 |
+|   10 | Pratham          | Udaipur |  38000 |      1000 |
++------+------------------+---------+--------+-----------+
+10 rows in set (0.01 sec)
+-------------------------------------------------------------------------------------
+Q4.Find the name of employee who lived in Nasik or Pune city.
+mysql> select ename from employee where address='pune' or address='nasik';
++------------------+
+| ename            |
++------------------+
+| Prathamesh Patil |
+| sneha            |
+| Savita           |
+| Ganesh           |
+| Amit             |
++------------------+
+5 rows in set (0.01 sec)
+-------------------------------------------------------------------------------------
+Q5.Find the name of employees who does not get commission.
+mysql> Select ename from employee where commision is null;
++--------+
+| ename  |
++--------+
+| sneha  |
+| Pooja  |
+| Amit   |
+| Piyush |
++--------+
+4 rows in set (0.01 sec)
+-------------------------------------------------------------------------------------
+Q6.Change the city of Amit to Nashik.
+mysql> update employee set address='nasik' where ename='amit';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select* from employee;
++------+------------------+---------+--------+-----------+
+| EID  | ename            | address | salary | commision |
++------+------------------+---------+--------+-----------+
+|    1 | Prathamesh Patil | pune    |  35000 |      5000 |
+|    2 | sneha            | pune    |  25000 |      NULL |
+|    3 | Savita           | Nasik   |  28000 |      2000 |
+|    4 | Pooja            | Mumbai  |  19000 |      NULL |
+|    5 | Sagar            | Mumbai  |  25000 |      3000 |
+|    6 | Ganesh           | Nasik   |  35000 |      4000 |
+|    7 | Amit             | nasik   |  23000 |      NULL |
+|    8 | Mohit            | Delhi   |  33000 |      4500 |
+|    9 | Piyush           | Kolkata |  30000 |      NULL |
+|   10 | Pratham          | Udaipur |  38000 |      1000 |
++------+------------------+---------+--------+-----------+
+10 rows in set (0.00 sec)
+-------------------------------------------------------------------------------------
+Q7.Find the information of employees whose name starts with ‘A’.
+mysql> select * from employee where ename LIKE 'A%';
++------+-------+---------+--------+-----------+
+| EID  | ename | address | salary | commision |
++------+-------+---------+--------+-----------+
+|    7 | Amit  | nasik   |  23000 |      NULL |
++------+-------+---------+--------+-----------+
+1 row in set (0.01 sec)
+-------------------------------------------------------------------------------------
+Q8.Find the count of staff from Mumbai.
+mysql> select count(ename) from employee where address='Mumbai';
++--------------+
+| count(ename) |
++--------------+
+|            2 |
++--------------+
+1 row in set (0.00 sec)
+-------------------------------------------------------------------------------------
+Q9.Find the count of staff from each city.
+mysql> select address,count(address) from employee group by address;
++---------+----------------+
+| address | count(address) |
++---------+----------------+
+| pune    |              2 |
+| Nasik   |              3 |
+| Mumbai  |              2 |
+| Delhi   |              1 |
+| Kolkata |              1 |
+| Udaipur |              1 |
++---------+----------------+
+6 rows in set (0.00 sec)
+-------------------------------------------------------------------------------------
+Q10.Find the address from where employees are belonging as well as where projects are going on.
+Q11.Find city wise minimum salary.
+mysql> select address,min(salary) from employee group by salary;
++---------+-------------+
+| address | min(salary) |
++---------+-------------+
+| pune    |       35000 |
+| pune    |       25000 |
+| Nasik   |       28000 |
+| Mumbai  |       19000 |
+| nasik   |       23000 |
+| Delhi   |       33000 |
+| Kolkata |       30000 |
+| Udaipur |       38000 |
++---------+-------------+
+8 rows in set (0.01 sec)
+-------------------------------------------------------------------------------------
+
+Q12.Find city wise maximum salary having maximum salary greater than 26000
+mysql> select address,max(salary) from employee where salary>26000 group by salary;
++---------+-------------+
+| address | max(salary) |
++---------+-------------+
+| pune    |       35000 |
+| Nasik   |       28000 |
+| Delhi   |       33000 |
+| Kolkata |       30000 |
+| Udaipur |       38000 |
++---------+-------------+
+5 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------
+Q13.Delete the employee who is having salary greater than 30,000.
+mysql> delete from employee where salary>30000;
+Query OK, 4 rows affected (0.01 sec)
+
+mysql> select* from employee;
++------+--------+---------+--------+-----------+
+| EID  | ename  | address | salary | commision |
++------+--------+---------+--------+-----------+
+|    2 | sneha  | pune    |  25000 |      NULL |
+|    3 | Savita | Nasik   |  28000 |      2000 |
+|    4 | Pooja  | Mumbai  |  19000 |      NULL |
+|    5 | Sagar  | Mumbai  |  25000 |      3000 |
+|    7 | Amit   | nasik   |  23000 |      NULL |
+|    9 | Piyush | Kolkata |  30000 |      NULL |
++------+--------+---------+--------+-----------+
+6 rows in set (0.00 sec)
+-------------------------------------------------------------------------------------
+
+
+
+
+var express=require('express')
+var app=express();
+app.arguments(express.urlencoded({extended:true}));
+app.use(express.json())
+app.post('/',async(req,res)=>{res.json({result:"Hello world"})});
+const port=3001;
+app.listen(port,()=>console.log('server started'));

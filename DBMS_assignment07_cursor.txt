@@ -1,0 +1,118 @@
+mysql> create table oldemployee(emp_id int,name varchar(50));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table newemployee(emp_id int,name varchar(50));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into oldemployee values(1,'prathamesh');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into oldemployee values(2,'ganesh');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into oldemployee values(3,'harshit');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into oldemployee values(4,'mahesh');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into oldemployee values(5,'aditya');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into newemployee values(5,'aditya');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into newemployee values(2,'ganesh');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into newemployee values(8,'piyush');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into newemployee values(9,'benson');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into newemployee values(6,'shantanu');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into newemployee values(7,'amit');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from oldemployee;
++--------+------------+
+| emp_id | name       |
++--------+------------+
+|      1 | prathamesh |
+|      2 | ganesh     |
+|      3 | harshit    |
+|      4 | mahesh     |
+|      5 | aditya     |
++--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from newemployee;
++--------+----------+
+| emp_id | name     |
++--------+----------+
+|      5 | aditya   |
+|      2 | ganesh   |
+|      8 | piyush   |
+|      9 | benson   |
+|      6 | shantanu |
+|      7 | amit     |
++--------+----------+
+6 rows in set (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure merging()
+    -> begin
+    -> declare empid1 int;
+    -> declare name1 varchar(50);
+    -> declare loopexit boolean;
+    -> declare c1 cursor for select * from oldemployee;
+    -> declare continue handler for not found set loopexit=true;
+    -> open c1;
+    -> aloop:LOOP
+    -> fetch c1 into empid1,name1;
+    -> if not exists(select * from newemployee where emp_id=empid1) then
+    -> insert into newemployee select * from oldemployee where emp_id=empid1;
+    -> end if;
+    -> if loopexit then close c1;
+    -> leave aloop;
+    -> end if;
+    -> end loop aloop;
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> delimiter ;
+mysql> call merging();
+
+mysql> select * from oldemployee;
++--------+------------+
+| emp_id | name       |
++--------+------------+
+|      1 | prathamesh |
+|      2 | ganesh     |
+|      3 | harshit    |
+|      4 | mahesh     |
+|      5 | aditya     |
++--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from newemployee;
++--------+------------+
+| emp_id | name       |
++--------+------------+
+|      5 | aditya     |
+|      2 | ganesh     |
+|      8 | piyush     |
+|      9 | benson     |
+|      6 | shantanu   |
+|      7 | amit       |
+|      1 | prathamesh |
+|      3 | harshit    |
+|      4 | mahesh     |
++--------+------------+
+9 rows in set (0.00 sec)
+

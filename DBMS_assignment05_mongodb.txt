@@ -1,0 +1,103 @@
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> use prathamesh
+switched to db prathamesh
+> db.createCollection('student')
+{ "ok" : 1 }
+> db.student.insert({rollnum:1,name:'prathamesh',address:'pune'})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollnum:2,name:'mahesh',address:'akola'})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollnum:3,name:'harshit',address:'bikaner'})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollnum:4,name:'aaditya',address:'nasik'})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollnum:5,name:'ganesh',address:'nasik'})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollnum:6,name:'piyush',address:'pune'})
+WriteResult({ "nInserted" : 1 })
+> db.student.find()
+{ "_id" : ObjectId("63197c438035457eb684ec0e"), "rollnum" : 1, "name" : "prathamesh", "address" : "pune" }
+{ "_id" : ObjectId("63197c588035457eb684ec0f"), "rollnum" : 2, "name" : "mahesh", "address" : "akola" }
+{ "_id" : ObjectId("63197c6e8035457eb684ec10"), "rollnum" : 3, "name" : "harshit", "address" : "bikaner" }
+{ "_id" : ObjectId("63197c818035457eb684ec11"), "rollnum" : 4, "name" : "aaditya", "address" : "nasik" }
+{ "_id" : ObjectId("63197c8b8035457eb684ec12"), "rollnum" : 5, "name" : "ganesh", "address" : "nasik" }
+{ "_id" : ObjectId("63197c998035457eb684ec13"), "rollnum" : 6, "name" : "piyush", "address" : "pune" }
+
+> db.createCollection('employee')
+{ "ok" : 1 }
+> show collections
+employee
+student
+
+> db.employee.drop()
+true
+
+> db.student.find().pretty();
+{
+        "_id" : ObjectId("63197c438035457eb684ec0e"),
+        "rollnum" : 1,
+        "name" : "prathamesh",
+        "address" : "pune"
+}
+{
+        "_id" : ObjectId("63197c588035457eb684ec0f"),
+        "rollnum" : 2,
+        "name" : "mahesh",
+        "address" : "akola"
+}
+{
+        "_id" : ObjectId("63197c6e8035457eb684ec10"),
+        "rollnum" : 3,
+        "name" : "harshit",
+        "address" : "bikaner"
+}
+{
+        "_id" : ObjectId("63197c818035457eb684ec11"),
+        "rollnum" : 4,
+        "name" : "aaditya",
+        "address" : "nasik"
+}
+{
+        "_id" : ObjectId("63197c8b8035457eb684ec12"),
+        "rollnum" : 5,
+        "name" : "ganesh",
+        "address" : "nasik"
+}
+{
+        "_id" : ObjectId("63197c998035457eb684ec13"),
+        "rollnum" : 6,
+        "name" : "piyush",
+        "address" : "pune"
+}
+
+> db.student.find({name:'prathamesh',rollnum:1})
+{ "_id" : ObjectId("63197c438035457eb684ec0e"), "rollnum" : 1, "name" : "prathamesh", "address" : "pune" }
+
+> db.student.find({rollnum:{$gt:2}})
+{ "_id" : ObjectId("63197c6e8035457eb684ec10"), "rollnum" : 3, "name" : "harshit", "address" : "bikaner" }
+{ "_id" : ObjectId("63197c818035457eb684ec11"), "rollnum" : 4, "name" : "aaditya", "address" : "nasik" }
+{ "_id" : ObjectId("63197c8b8035457eb684ec12"), "rollnum" : 5, "name" : "ganesh", "address" : "nasik" }
+{ "_id" : ObjectId("63197c998035457eb684ec13"), "rollnum" : 6, "name" : "piyush", "address" : "pune" }
+
+> db.student.find({rollnum:{$gte:2}})
+{ "_id" : ObjectId("63197c588035457eb684ec0f"), "rollnum" : 2, "name" : "mahesh", "address" : "akola" }
+{ "_id" : ObjectId("63197c6e8035457eb684ec10"), "rollnum" : 3, "name" : "harshit", "address" : "bikaner" }
+{ "_id" : ObjectId("63197c818035457eb684ec11"), "rollnum" : 4, "name" : "aaditya", "address" : "nasik" }
+{ "_id" : ObjectId("63197c8b8035457eb684ec12"), "rollnum" : 5, "name" : "ganesh", "address" : "nasik" }
+{ "_id" : ObjectId("63197c998035457eb684ec13"), "rollnum" : 6, "name" : "piyush", "address" : "pune" }
+
+> db.student.find({rollnum:{$lt:5}})
+{ "_id" : ObjectId("63197c438035457eb684ec0e"), "rollnum" : 1, "name" : "prathamesh", "address" : "pune" }
+{ "_id" : ObjectId("63197c588035457eb684ec0f"), "rollnum" : 2, "name" : "mahesh", "address" : "akola" }
+{ "_id" : ObjectId("63197c6e8035457eb684ec10"), "rollnum" : 3, "name" : "harshit", "address" : "bikaner" }
+{ "_id" : ObjectId("63197c818035457eb684ec11"), "rollnum" : 4, "name" : "aaditya", "address" : "nasik" }
+
+> db.student.find({rollnum:{$lt:5,$gt:2}})
+{ "_id" : ObjectId("63197c6e8035457eb684ec10"), "rollnum" : 3, "name" : "harshit", "address" : "bikaner" }
+{ "_id" : ObjectId("63197c818035457eb684ec11"), "rollnum" : 4, "name" : "aaditya", "address" : "nasik" }
+
+> db.student.update({name:'harshit'},{$set:{name:'harshit mundhra'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })

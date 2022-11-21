@@ -1,0 +1,49 @@
+> db.agggregationpractice.insertMany([{name:'prathamesh',year:'TE',marks:93},{name:'harshit',year:'TE',marks:90},{name:'mahesh',year:'SE',marks:89},{name:'aditya',year:'SE',marks:88}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("63797af7a00873e925f4951d"),
+                ObjectId("63797af7a00873e925f4951e"),
+                ObjectId("63797af7a00873e925f4951f"),
+                ObjectId("63797af7a00873e925f49520")
+        ]
+}
+
+> db.agggregationpractice.find().pretty()
+{
+        "_id" : ObjectId("63797af7a00873e925f4951d"),
+        "name" : "prathamesh",
+        "year" : "TE",
+        "marks" : 93
+}
+{
+        "_id" : ObjectId("63797af7a00873e925f4951e"),
+        "name" : "harshit",
+        "year" : "TE",
+        "marks" : 90
+}
+{
+        "_id" : ObjectId("63797af7a00873e925f4951f"),
+        "name" : "mahesh",
+        "year" : "SE",
+        "marks" : 89
+}
+{
+        "_id" : ObjectId("63797af7a00873e925f49520"),
+        "name" : "aditya",
+        "year" : "SE",
+        "marks" : 88
+}
+
+Map function
+> var mapfunc=function(){emit(this.year,this.marks)}
+Reduce function
+> var reducefunc=function(key,values){return Array.sum(values)}
+
+mapReduce function
+> db.agggregationpractice.mapReduce(mapfunc,reducefunc,{out:"Result"})
+{ "result" : "Result", "ok" : 1 }
+
+> db.Result.find()
+{ "_id" : "TE", "value" : 183 }
+{ "_id" : "SE", "value" : 177 }

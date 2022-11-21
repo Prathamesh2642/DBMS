@@ -1,0 +1,75 @@
+mysql> use prathamesh;
+Database changed
+mysql> select * from stud;
++--------+------------+-------+
+| rollno | name       | marks |
++--------+------------+-------+
+|      1 | prathamesh |  1490 |
+|      2 | rohit      |  1470 |
+|      3 | rohan      |  1300 |
+|      4 | rahul      |  1000 |
+|      5 | sachin     |   800 |
+|      6 | virat      |   750 |
++--------+------------+-------+
+6 rows in set (0.13 sec)
+
+mysql> delimiter //
+mysql> create function marking(rno int)
+    -> returns varchar(30)
+    -> deterministic
+    -> begin
+    -> declare classgrade varchar(30);
+    -> declare mark1 int;
+    -> select marks into mark1 from stud where rno=rollno;
+    -> if (mark1>=990 and mark1<=1500) then
+    -> set classgrade="Distinction";
+    -> elseif (mark1>=800 and mark1<=989) then
+    -> set classgrade="firstclass";
+    -> elseif(mark1>750 and mark1<=799) then
+    -> set classgrade="second class";
+    -> end if;
+    -> return classgrade;
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> delimiter ;
+mysql> select marking(1);
++-------------+
+| marking(1)  |
++-------------+
+| Distinction |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select marking(2);
++-------------+
+| marking(2)  |
++-------------+
+| Distinction |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select marking(3);
++-------------+
+| marking(3)  |
++-------------+
+| Distinction |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select marking(4);
++-------------+
+| marking(4)  |
++-------------+
+| Distinction |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select marking(5);
++------------+
+| marking(5) |
++------------+
+| firstclass |
++------------+
+1 row in set (0.00 sec)

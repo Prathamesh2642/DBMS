@@ -1,0 +1,139 @@
+mysql> create table library(lib_id int,bookname varchar(50),authorname varchar(30),pages int);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> insert into library values(1,'Harry Potter:Prisoner of azkaban','jk rowling',400);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into library values(2,'Percy Jackson:The lightning thief','Rick Riordan',450);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into library values(3,'adventures of sherlock holmes','Arthur conan doyle',500);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into library values(4,'The lord of the rings','J R R tolkien',900);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from library;
++--------+-----------------------------------+--------------------+-------+
+| lib_id | bookname                          | authorname         | pages |
++--------+-----------------------------------+--------------------+-------+
+|      1 | Harry Potter:Prisoner of azkaban  | jk rowling         |   400 |
+|      2 | Percy Jackson:The lightning thief | Rick Riordan       |   450 |
+|      3 | adventures of sherlock holmes     | Arthur conan doyle |   500 |
+|      4 | The lord of the rings             | J R R tolkien      |   900 |
++--------+-----------------------------------+--------------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table library_audit(lib_id int,bookname varchar(50),updates_made varchar(100));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> describe library_audit;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| lib_id       | int          | YES  |     | NULL    |       |
+| bookname     | varchar(50)  | YES  |     | NULL    |       |
+| updates_made | varchar(100) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> delimiter //    
+mysql> create trigger update_log after update on library for each row
+    -> begin
+    -> insert into library_audit values (old.lib_id,old.bookname,concat(old.pages,' is changed to ',new.pages));
+    -> end      
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+
+mysql> delimiter ;
+mysql> update library set pages=970 where lib_id=4;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from library_audit;
++--------+-----------------------+-----------------------+
+| lib_id | bookname              | updates_made          |
++--------+-----------------------+-----------------------+
+|      4 | The lord of the rings | 900 is changed to 970 |
++--------+-----------------------+-----------------------+
+1 row in set (0.00 sec)
+
+mysql> update library set pages=475 where lib_id=2;dele
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from library_audit;
++--------+-----------------------------------+-----------------------+
+| lib_id | bookname                          | updates_made          |
++--------+-----------------------------------+-----------------------+
+|      4 | The lord of the rings             | 900 is changed to 970 |
+|      2 | Percy Jackson:The lightning thief | 450 is changed to 475 |
++--------+-----------------------------------+-----------------------+
+2 rows in set (0.01 sec)
+
+mysql> update library set pages=420 where lib_id=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from library_audit;
++--------+-----------------------------------+-----------------------+
+| lib_id | bookname                          | updates_made          |
++--------+-----------------------------------+-----------------------+
+|      4 | The lord of the rings             | 900 is changed to 970 |
+|      2 | Percy Jackson:The lightning thief | 450 is changed to 475 |
+|      1 | Harry Potter:Prisoner of azkaban  | 400 is changed to 420 |
++--------+-----------------------------------+-----------------------+
+3 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create trigger delete_log after delete on library for each row
+    -> begin
+    -> insert into library_audit values (old.lib_id,old.bookname,concat(old.bookname,' is deleted from library table'));
+    -> end
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> delimiter ;
+mysql> delete from library where lib_id=2;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from library_audit;
++--------+-----------------------------------+-----------------------------------------------------------------+
+| lib_id | bookname                          | updates_made                                                    |
++--------+-----------------------------------+-----------------------------------------------------------------+
+|      4 | The lord of the rings             | 900 is changed to 970                                           |
+|      2 | Percy Jackson:The lightning thief | 450 is changed to 475                                           |
+|      1 | Harry Potter:Prisoner of azkaban  | 400 is changed to 420                                           |
+|      2 | Percy Jackson:The lightning thief | Percy Jackson:The lightning thief is deleted from library table |
++--------+-----------------------------------+-----------------------------------------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> delete from library where lib_id=4;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from library_audit;
++--------+-----------------------------------+-----------------------------------------------------------------+
+| lib_id | bookname                          | updates_made                                                    |
++--------+-----------------------------------+-----------------------------------------------------------------+
+|      4 | The lord of the rings             | 900 is changed to 970                                           |
+|      2 | Percy Jackson:The lightning thief | 450 is changed to 475                                           |
+|      1 | Harry Potter:Prisoner of azkaban  | 400 is changed to 420                                           |
+|      2 | Percy Jackson:The lightning thief | Percy Jackson:The lightning thief is deleted from library table |
+|      4 | The lord of the rings             | The lord of the rings is deleted from library table             |
++--------+-----------------------------------+-----------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+
+
+
+
+
+create trigger salary_trigger before insert on emp for each row
+begin.
+declare avgsalary int;
+if(old.salary1>50000 and old.salary2>50000 and old.salary>50000) then 
+	set avgsalary=(old.salary1+old.salary2+old.salary3)/3
+insert into avgsal values(new.empid,avgsalary);
+end;
+//
